@@ -103,7 +103,19 @@
   .step-row h3{font-weight:700;font-style:italic;font-size:1.35rem;text-transform:none;color:var(--ink);}
   .step-row p{margin:6px 0 0;font-size:0.96rem;color:var(--ink-soft);}
 
+  #products{border-top:1px solid var(--line-soft);}
+  .product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,32px);}
+  @media (max-width:720px){ .product-grid{grid-template-columns:1fr;} }
+  .product-img{width:100%;height:auto;display:block;border:1px solid var(--line-soft);}
+
   #configurator{border-top:1px solid var(--line-soft);background:var(--bg-raised);}
+  .vehicle-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-bottom:clamp(32px,5vw,40px);}
+  @media (max-width:720px){ .vehicle-fields{grid-template-columns:1fr;} }
+  .field{display:flex;flex-direction:column;gap:8px;min-width:0;}
+  .field-label{font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-faint);}
+  .field-input{background:var(--bg);border:1px solid var(--line);color:var(--ink);padding:12px 14px;font-family:inherit;font-size:0.92rem;border-radius:0;width:100%;}
+  .field-input:focus{outline:none;border-color:var(--accent);}
+  select.field-input{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2364473e' stroke-width='1.6'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
   .scope-grid{display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);}
   @media (max-width:720px){ .scope-grid{grid-template-columns:1fr;} }
   .scope-card{position:relative;text-align:left;cursor:pointer;background:var(--bg);border:none;padding:28px 24px 32px;display:flex;flex-direction:column;gap:12px;min-height:200px;width:100%;}
@@ -140,6 +152,7 @@
   </div>
   <nav>
     <button class="btn-reset nav-link mono" data-scroll="process" data-i18n="nav.process"></button>
+    <button class="btn-reset nav-link mono" data-scroll="products" data-i18n="nav.products"></button>
     <button class="btn-reset nav-link mono" data-scroll="configurator" data-i18n="nav.configurator"></button>
     <div class="lang-toggle">
       <button class="lang-btn mono" data-lang="tr" aria-pressed="true">TR</button>
@@ -239,12 +252,46 @@
   </div>
 </section>
 
+<section id="products">
+  <div class="wrap">
+    <div class="section-head">
+      <div style="max-width:640px;">
+        <p class="mono eyebrow2" data-i18n="products.eyebrow"></p>
+        <h2 data-i18n="products.h2"></h2>
+      </div>
+    </div>
+    <div class="product-grid">
+      <img class="product-img" src="product-f10.jpg" alt="BMW F10 M Dönüşüm Seti">
+      <img class="product-img" src="product-e60.jpg" alt="BMW E60 M Dönüşüm Seti">
+    </div>
+  </div>
+</section>
+
 <section id="configurator">
   <div class="wrap">
     <div style="max-width:640px;margin-bottom:clamp(40px,6vw,56px);">
       <p class="mono eyebrow2" data-i18n="config.eyebrow"></p>
       <h2 style="margin-bottom:14px;" data-i18n="config.h2"></h2>
       <p style="font-size:1rem;color:var(--ink-soft);margin:0;" data-i18n="config.sub"></p>
+    </div>
+
+    <div class="vehicle-fields">
+      <div class="field">
+        <label class="mono field-label" data-i18n="config.vehicleLabel"></label>
+        <input type="text" id="vehicleModel" class="field-input" data-i18n-placeholder="config.vehiclePlaceholder">
+      </div>
+      <div class="field">
+        <label class="mono field-label" data-i18n="config.currentYearLabel"></label>
+        <select id="currentYear" class="field-input">
+          <option value="" data-i18n="config.yearPlaceholder"></option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="mono field-label" data-i18n="config.targetYearLabel"></label>
+        <select id="targetYear" class="field-input">
+          <option value="" data-i18n="config.yearPlaceholder"></option>
+        </select>
+      </div>
     </div>
 
     <div class="scope-grid">
@@ -291,6 +338,7 @@
         <span class="mono footer-nav-title" data-i18n="footer.navTitle"></span>
         <button class="btn-reset" data-scroll="beforeafter" data-i18n="stage.h2"></button>
         <button class="btn-reset" data-scroll="process" data-i18n="process.h2"></button>
+        <button class="btn-reset" data-scroll="products" data-i18n="products.h2"></button>
         <button class="btn-reset" data-scroll="configurator" data-i18n="config.h2"></button>
       </div>
       <div class="footer-nav">
@@ -309,7 +357,7 @@
 <script>
 const COPY = {
   tr: {
-    nav: { process: "Süreç", configurator: "Konfigüratör" },
+    nav: { process: "Süreç", products: "Setler", configurator: "Konfigüratör" },
     hero: {
       eyebrow: "NESİL DÖNÜŞÜMÜ ATÖLYESİ",
       h1: "ARACINIZ YENİDEN DOĞUYOR.",
@@ -323,6 +371,7 @@ const COPY = {
       { tag: "03", title: "Boya & Yüzey", desc: "Fabrika kalitesinde boya veya kaplama, iz bırakmadan pürüzsüz bir geçiş sağlar." },
     ],
     process: { eyebrow: "SÜREÇ", h2: "Nasıl Yeniden Doğar?" },
+    products: { eyebrow: "STOKTA", h2: "Hazır Dönüşüm Setlerimiz" },
     steps: [
       { title: "Söküm & Ekspertiz", desc: "Aracınız detaylı incelenir, hangi nesil çizgilere taşınacağı birlikte kararlaştırılır." },
       { title: "Kaporta & Tampon", desc: "Yeni nesil tampon, ızgara ve çamurluk parçaları kasaya uyarlanır." },
@@ -336,6 +385,11 @@ const COPY = {
       h2: "Dönüşümünüzü Planlayın",
       sub: "Kapsamı seçin, size özel bir değerlendirme için ekibimiz sizinle iletişime geçsin.",
       note: "Kesin fiyat ve süre, aracınızın yerinde incelenmesinin ardından netleşir.",
+      vehicleLabel: "Marka & Model",
+      vehiclePlaceholder: "örn. BMW 5 Serisi (F10)",
+      currentYearLabel: "Mevcut Model Yılı",
+      targetYearLabel: "Hedef Model Yılı",
+      yearPlaceholder: "Seçiniz",
     },
     scopeOptions: [
       { tag: "01", title: "Sadece Dış", desc: "Tampon, ızgara, farlar ve boya/kaplama." },
@@ -351,7 +405,7 @@ const COPY = {
     select: "SEÇ",
   },
   en: {
-    nav: { process: "Process", configurator: "Configurator" },
+    nav: { process: "Process", products: "Kits", configurator: "Configurator" },
     hero: {
       eyebrow: "GENERATION TRANSFORMATION WORKSHOP",
       h1: "YOUR CAR, REBORN.",
@@ -365,6 +419,7 @@ const COPY = {
       { tag: "03", title: "Paint & Surface", desc: "Factory-grade paint or wrap for a seamless, trace-free finish." },
     ],
     process: { eyebrow: "PROCESS", h2: "How It's Reborn" },
+    products: { eyebrow: "IN STOCK", h2: "Ready Conversion Kits" },
     steps: [
       { title: "Strip & Assessment", desc: "We inspect the car in detail and agree together which generation's lines it's headed for." },
       { title: "Body & Bumper Swap", desc: "New-generation bumpers, grille and fender pieces are fitted to the body." },
@@ -378,6 +433,11 @@ const COPY = {
       h2: "Plan Your Transformation",
       sub: "Choose the scope and our team will reach out for a personal assessment.",
       note: "Exact price and timeline are confirmed after an in-person inspection of your car.",
+      vehicleLabel: "Make & Model",
+      vehiclePlaceholder: "e.g. BMW 5 Series (F10)",
+      currentYearLabel: "Current Model Year",
+      targetYearLabel: "Target Model Year",
+      yearPlaceholder: "Select",
     },
     scopeOptions: [
       { tag: "01", title: "Exterior Only", desc: "Bumper, grille, lights and paint or wrap." },
@@ -410,6 +470,9 @@ function renderStaticText() {
   document.querySelectorAll(".lang-btn").forEach((btn) => {
     btn.setAttribute("aria-pressed", String(btn.dataset.lang === state.lang));
   });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    el.placeholder = get(T, el.getAttribute("data-i18n-placeholder"));
+  });
 
   const stepsList = document.getElementById("stepsList");
   stepsList.innerHTML = "";
@@ -439,6 +502,21 @@ document.querySelectorAll(".lang-btn").forEach((btn) => {
     renderStaticText();
   });
 });
+
+function populateYears() {
+  const currentYearNow = new Date().getFullYear();
+  const startYear = 1990;
+  ["currentYear", "targetYear"].forEach((id) => {
+    const select = document.getElementById(id);
+    for (let y = currentYearNow; y >= startYear; y--) {
+      const opt = document.createElement("option");
+      opt.value = String(y);
+      opt.textContent = String(y);
+      select.appendChild(opt);
+    }
+  });
+}
+populateYears();
 
 const compareRange = document.getElementById("compareRange");
 const compareBeforeWrap = document.getElementById("compareBeforeWrap");
